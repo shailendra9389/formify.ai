@@ -4,6 +4,7 @@ import ModeToggle from '@/components/upgradebutton'
 import { UserButton } from '@clerk/nextjs'
 import { ThemeProvider } from '@/components/theme-provider'
 import React from 'react'
+import Link from 'next/link'
 
 export default function layout({ children }: { children: React.ReactNode }) {
     return (
@@ -15,7 +16,10 @@ export default function layout({ children }: { children: React.ReactNode }) {
                     
                         <Logo />
                         <div className='flex items-center'>
-                            <Button variant={"link"}>Dashboard</Button>
+                        <Link href={"/dashboard/analytics"}>
+              {" "}
+              <Button variant={"link"}>Dashboard</Button>
+            </Link>
                             <UserButton/> 
                             <ModeToggle/>
                             

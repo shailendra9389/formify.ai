@@ -41,24 +41,24 @@ console.log("header",form.content.formTitle);
     <div>
       <Card className="w-[350px]">
         <CardHeader>
-        <CardTitle>{form.content.formTitle}</CardTitle>
+        <CardTitle>{form.content.title}</CardTitle>
 
           <CardDescription>
             Deploy your new project in one-click.
           </CardDescription>
         </CardHeader>
         <CardContent>
-          {/* <Link href={`/dashboard/forms/${form.id}/submissions`}>
-            {" "}
+          <Link href={`/dashboard/forms/${form.id}/submissions`}>
+            
             <Button variant={"link"} className="text-blue-600">
               Submission - {form.submissions}
             </Button>{" "}
-          </Link> */}
+          </Link>
         </CardContent>
         <CardFooter className="flex justify-between">
-          {/* <Button variant="outline" onClick={()=> router.push(`/dashboard/forms/edit/${form.id}`)}> */}
+          <Button variant="outline" onClick={()=> router.push(`/dashboard/forms/edit/${form.id}`)}>
             <Edit2 /> Edit
-          {/* </Button> */}
+          </Button>
           <Button onClick={()=> deleteFormHandler(form.id)} variant={"destructive"}>Delete</Button>
         </CardFooter>
       </Card>

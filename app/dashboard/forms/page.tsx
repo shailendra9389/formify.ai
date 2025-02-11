@@ -15,7 +15,7 @@ import React from "react";
 
 const MyForm = async () => {
   const forms = await getForms();
-    console.log(forms);
+    
     //console.log(forms.data[0].content.title);
   return (
     <div>

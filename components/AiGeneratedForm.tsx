@@ -1,4 +1,5 @@
-import React from 'react'
+"use client"
+import React, { useState } from 'react'
 import { Label } from './ui/label';
 import { Input } from './ui/input';
 import { Textarea } from './ui/textarea';
@@ -6,13 +7,56 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '.
 import { RadioGroup, RadioGroupItem } from './ui/radio-group';
 import { Checkbox } from './ui/checkbox';
 import { Button } from './ui/button';
+import { publishForm } from '@/actions/publishForm';
+import toast from 'react-hot-toast';
+import FormPublishDialog from './FormPublishDialog';
+import { boolean } from 'zod';
+import { submitForm } from '@/actions/submitForm';
 type Props = { form: any; isEditMode: boolean };
 const AiGeneratedForm: React.FC<Props> = ({ form, isEditMode }) => {
     if (!form || !form.content.fields) return <p>Loading...</p>;
+    const [successDialogOpen,setSuccessDialogOpen]=useState<boolean>(false);
+    const [formData, setFormData] = useState<any>({});
+    //const content=form.content?.feilds ? form.content?.fields : form.content.content.fields;
+
+    const handleChange = (e:React.ChangeEvent<HTMLInputElement>) => {
+        const {name, value}= e.target;
+        setFormData({...formData, [name]:value});
+      }
+
     console.log("content form",form.content.fields);
+    const handlePublish=async(e:React.FormEvent)=>{
+        e.preventDefault();
+        if(isEditMode){
+            await publishForm(form.id);
+            setSuccessDialogOpen(true);
+        }
+
+    }
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        const data = await submitForm(form.id, formData);
+    
+        if(data?.success){
+          toast.success(data.message);
+          setFormData({});
+        }
+        if(!data?.success){
+          toast.error(data?.message);
+        }
+        }
+        const value = typeof form.content !== 'object' ? JSON.parse(form.content as any) : form.content;
+
+        let data;
+      
+        if (typeof value === "object" && form !== null && !Array.isArray(value)) {
+          data = form.content.fields;
+        } else {
+          data = form.content.fields;
+        }
     return (
         <div>
-            <form>
+            <form onSubmit={isEditMode ? handlePublish : handleSubmit}>
                 {
                     form.content.fields.map((item: any, index: number) => (
                         <div key={index} className='mb-4'>
@@ -22,6 +66,7 @@ const AiGeneratedForm: React.FC<Props> = ({ form, isEditMode }) => {
                                     type={item.type}
 
                                     name={item.label}
+                                    onChange={handleChange}
                                     placeholder={item.placeholder}
                                     required={!isEditMode && true} />) : 
                                 item.type === "textarea" ? (
@@ -77,9 +122,11 @@ const AiGeneratedForm: React.FC<Props> = ({ form, isEditMode }) => {
                 }
                 
                 <Button type="submit">{
-                    isEditMode ? "Publish": form.content.button.label ? form.content.button.label : form.content.button.text} 
+                    isEditMode ? "Publish": "Submit"} 
                     </Button>
+                    
             </form>
+            <FormPublishDialog formId={form.id} open={successDialogOpen} onOpenChange={setSuccessDialogOpen}/>
         </div>
     )
 }
