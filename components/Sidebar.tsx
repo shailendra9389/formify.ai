@@ -15,7 +15,7 @@ import { ChartSpline, ClipboardList } from "lucide-react";
 import { Separator } from "./ui/separator";
 import Link from "next/link";
 //import UpgradeButton from "./UpgradeButton";
-import { currentUser } from "@clerk/nextjs/server";
+// import { currentUser } from "@clerk/nextjs/server";
 
 type MenuItems = {
   title: string;
@@ -37,7 +37,7 @@ const items: MenuItems[] = [
 ];
 
 const DashboardSidebar = async () => {
-  const user = await currentUser();
+  // const user = await currentUser();
   return (
     <Sidebar>
       <SidebarContent>

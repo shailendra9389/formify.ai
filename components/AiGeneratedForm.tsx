@@ -64,16 +64,22 @@ const AiGeneratedForm: React.FC<Props> = ({ form, isEditMode }) => {
                             {item.type === "text" || item.type === "email" || item.type === "date" || item.type === "tel" || item.type === "number" || item.type === "file" ? (
                                 <Input
                                     type={item.type}
-
                                     name={item.label}
+                                    value={formData[item.label] || ''}
                                     onChange={handleChange}
                                     placeholder={item.placeholder}
                                     required={!isEditMode && true} />) : 
                                 item.type === "textarea" ? (
-                                    <Textarea name={item.label} placeholder={item.placeholder} required={!isEditMode && true} className='w-full border-rounded'/>
+                                    <Textarea 
+                                        name={item.label} 
+                                        value={formData[item.label] || ''}
+                                        onChange={(e) => setFormData({...formData, [item.label]: e.target.value})}
+                                        placeholder={item.placeholder} 
+                                        required={!isEditMode && true} 
+                                        className='w-full border-rounded'/>
                                 ) : 
                                     item.type === "dropdown" ? (
-                                        <Select>
+                                        <Select onValueChange={(value) => setFormData({...formData, [item.label]: value})} value={formData[item.label] || ''}>
                                             <SelectTrigger>
                                                 <SelectValue placeholder={item.placeholder}></SelectValue>
                                             </SelectTrigger>
@@ -87,9 +93,9 @@ const AiGeneratedForm: React.FC<Props> = ({ form, isEditMode }) => {
                                         </Select>
                                     ) : 
                                         item.type === "radio" ? (
-                                            <RadioGroup>
+                                            <RadioGroup onValueChange={(value) => setFormData({...formData, [item.label]: value})} value={formData[item.label] || ''}>
                                                 {
-                                                    item.options!.map((option: string, index: number) => (
+                                                    item.options?.map((option: string, index: number) => (
                                                         <Label key={index} >
                                                             <RadioGroupItem  value={option} required={!isEditMode && item.required}></RadioGroupItem>
                                                             <span>{option}</span>
@@ -99,11 +105,17 @@ const AiGeneratedForm: React.FC<Props> = ({ form, isEditMode }) => {
                                             </RadioGroup>
                                         ) : 
                                             item.type === "checkbox" || item.type==="select" ? (
-                                                item.options.map((option: string, index: number) => (
+                                                item.options?.map((option: string, index: number) => (
                                                     <Label key={index} className=' ml-2 mt-2'>
-                                                        <Checkbox name={item.label} value={option} >
-
-                                                        </Checkbox>
+                                                        <Checkbox 
+                                                            name={item.label} 
+                                                            value={option} 
+                                                            checked={formData[item.label] === option}
+                                                            onCheckedChange={(checked) => {
+                                                                if(checked) setFormData({...formData, [item.label]: option});
+                                                                else setFormData({...formData, [item.label]: ''});
+                                                            }}
+                                                        />
                                                         <span>{option}</span>
                                                     </Label>
                                                 ))
