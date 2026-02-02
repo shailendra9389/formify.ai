@@ -42,7 +42,7 @@ const AiGeneratedForm: React.FC<Props> = ({ form, isEditMode }) => {
           setFormData({});
         }
         if(!data?.success){
-          toast.error(data?.message);
+          toast.error(data?.message || "Something went wrong");
         }
         }
         const value = typeof form.content !== 'object' ? JSON.parse(form.content as any) : form.content;
