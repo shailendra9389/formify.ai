@@ -20,10 +20,7 @@ type Props = {
 
 const FormPublishDialog: React.FC<Props> = ({ formId, open, onOpenChange }) => {
     const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
-    if(!BASE_URL){
-      toast.error("BASE_URL is not defined");
-      return null;
-    }
+ 
  
     const copyClipboard = () => {
       const link = `${BASE_URL}/forms/${formId}`;

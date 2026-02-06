@@ -44,7 +44,7 @@ console.log("header",form.content.formTitle);
         <CardTitle>{form.content.title}</CardTitle>
 
           <CardDescription>
-            Deploy your new project in one-click.
+            Deploy your new form in one-click.
           </CardDescription>
         </CardHeader>
         <CardContent>
